@@ -1,0 +1,109 @@
+
+
+//Code withot Fixing FIXME: marked issues
+
+import './App.css';
+import { useState } from 'react';
+function App() {
+
+  /*
+   This is an array which will store all the tasks that we have added to our app and since it is dynamic hence we have to use state hooks. Initial value will be an empty array 
+  */
+ const [todoList,setToddoList]=useState([]);
+ const addTast=()=>{
+    //since todoList is an array so below will not word
+    // setToddoList(newTast);
+
+    //["firstwork","secondword",.....] and now we want to add "nthtask"
+    //then newlist =oldlist+"nthtask"
+    const newTodoList=[...todoList,newTask];
+    setToddoList(newTodoList);
+ }
+
+
+
+
+ /*
+  And whenever onclick event occur we need to take information from input box so here new hooks for that
+ */
+ const [newTask,setNewTask]=useState("");
+ const inptChange=(event)=>{
+    setNewTask(event.target.value);
+ };
+
+
+
+
+ /*
+  This state is for delete task
+ */
+ const deleteTask=(taskName)=>{
+  /*
+    deleting task mean we need to change todoList array so here filter function came into picture for an example suppose we have and array like 
+    const arr=["pedro","jessica","james"]; we need another array same as arr but pedro should not be there so we can filter using condition  like 
+      if(val!="pedro") return val;
+      else not return anything
+
+    similarly here as we are taking task as an parameter so we came to know which task should not be there in new array 
+    and after getting newarray we actually need to change todoList array variable by using setToddoList(newarr);
+  */
+  const newarr=todoList.filter(
+      (val,idx,todoList)=>{
+        if(val!=taskName) return val;
+      }
+  );
+  //Or another way is this here based on value of true and false it will take vale into newarr if returned value is true else it will not take it into the newarr
+  // const newarr=todoList.fill(
+  //   (val,idx,todoList)=>{
+  //     if(val==taskName) return false;
+  //     else return true;
+  //   }
+  // );
+  setToddoList(newarr);
+
+  // FIXME:
+  /*
+      But now here is one catch suppose we have tow same task as "Do homework" and second is also "Do homework" so till here if we press Delete button of one of the "Do homework" it will delete both of them 
+      now to distinguish both task we can do one thing which is assign id to every task so now we need to modify our arr of string to arr of an object which have like
+      {
+        id:1
+        taskName:"do homework"
+      } 
+  */
+ }
+
+
+
+
+
+  return (
+    <div className="App">
+      {
+      /* 
+        this div will take main input of task using text box and button
+      */
+      }
+        <div className='addTask'>
+            <input onChange={inptChange}/>
+            <button onClick={addTast}>Add Task</button>
+        </div>
+        <div>
+          {
+            todoList.map(
+                (val,idx,todoList)=>{
+                  return  <div>
+                    <h1>{val}</h1>
+                    {/* now when ever user click on Delete button then how we came to know which task user want to delet so in deleteTask function we need to pass one parameter which is val i.e. task which he want to delete 
+                    Now in Reack when ever we pass parameter we need to write ()=> before function name 
+                    */}
+                    <button onClick={()=>deleteTask(val)}>Delete</button>
+                  </div>;
+                }
+            )
+          }
+        </div>
+    </div>
+  );
+}
+export default App;
+
